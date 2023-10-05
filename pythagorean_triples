@@ -1,0 +1,70 @@
+#!/bin/bash
+
+<<COMMENTS
+Author: Jordan Wallschlaeger
+CI 201 01PC
+Pythagorean triples assignment
+COMMENTS
+
+clear
+
+date > TryTime.txt
+
+function m_n_error_checking() {
+	if ! [[ $1 =~ ^[0-9]+$ && $2 =~ ^[0-9]+$ ]]; then
+		echo "Error: M and N must be integers" | tee -a TryTime.txt
+		return 1
+	fi
+	
+	if [[ $1 -lt 1 || $2 -lt 1 ]]; then
+		echo "Error: M and N must be positive integers" >&2 | tee -a TryTime.txt
+		return 1
+	fi
+	
+	if [[ $2 -ge $1 ]]; then
+		echo "Error: N must be less than M" >&2 | tee -a TryTime.txt
+		return 1
+	fi
+	return 0
+}
+
+function a_triple_generator() {
+  local m=$1
+  local n=$2
+  local a=$((m * m - n * n))
+  echo "a=$a" >&1 | tee -a TryTime.txt
+}
+
+
+function b_triple_generator() {
+  local m=$1
+  local n=$2
+  local b=$((2 * m * n))
+  echo "b=$b" >&1 | tee -a TryTime.txt
+}
+
+
+function c_triple_generator() {
+  local m=$1
+  local n=$2
+  local c=$((m * m + n * n))
+  echo "c=$c" >&1 | tee -a TryTime.txt
+}
+
+thisvar=""
+
+while [[ "$thisvar" != "no" ]]; do
+	read -p "Enter M value: " m
+	read -p "Enter N value: " n
+	echo "The value M is $m and N is $n" | tee -a TryTime.txt
+	if m_n_error_checking $m $n; then
+		a_triple_generator $m $n
+		b_triple_generator $m $n
+		c_triple_generator $m $n
+	fi
+	read -p "Create another Pythagorean Triple? yes/no  " thisvar
+done
+
+cat TryTime.txt
+
+

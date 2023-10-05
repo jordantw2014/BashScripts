@@ -1,0 +1,377 @@
+#!/bin/bash
+
+<<COMMENTS
+
+COMMENTS
+
+function menu () {
+	clear
+	echo "-------------Main Menu-------------"
+	echo "1) Disk Management"
+	echo "2) File Management"
+	echo "3) Network Management"
+	echo "4) Process Management"
+	echo "5) User Account Management"
+	echo "6) Utilities"
+	echo "7) Exit"
+	read -p "Please enter the number of the function you want: " funcnum
+	case $funcnum in
+		1) diskmanage ;;
+		2) filemanage ;;
+		3) networkmanage ;;
+		4) processmanage ;;
+		5) useraccmanage ;;
+		6) utilities ;;
+		7) exitfunc ;;
+		*) echo "Not a valid option"; read -p "Hit enter to proceed" blankvar; menu ;;
+	esac
+}
+
+function exitfunc () {
+	exit
+}
+
+function diskmanage () {
+	clear
+}
+
+function filemanage () {
+	clear
+}
+
+function networkmanage () {
+	clear
+	echo "-------Network Management-------"
+	echo "1) ifconfig 2) ping"
+	echo "3) traceroute 4) nslookup"
+	echo "5) View network interface"
+	echo "6) View network routing table"
+	echo "7) View current system users"
+	echo "8) View client machine info"
+	echo "9) Main menu"
+	read -p "Please enter the number of the function you want: " netmannum
+	case $netmannum in
+		1) ifcon ;;
+		2) png ;;
+		3) tracert ;;
+		4) nslook ;;
+		5) networkinter ;;
+		6) networkroute ;;
+		7) cursysusr ;;
+		8) clientmachinfo ;;
+		9) menu ;;
+		*) echo "Not a valid option"; read -p "Hit enter to proceed" blankvar ;;
+	esac
+}
+
+function ifcon () {
+	clear
+	ifconfig
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function png () {
+	clear
+	read -p "What is the IP Address or website you want to ping (x.x.x.x): " pingvar
+	ping $pingvar
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function tracert () {
+	clear
+	read -p "What is the IP Address or website you want to trace (x.x.x.x): " tracevar
+	traceroute $tracevar
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function nslook () {
+	clear
+	read -p "What is the IP Address or website you want to look up? (x.x.x.x) " nsvar
+	nslookup $nsvar
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function networkinter () {
+	clear
+	ip a
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function networkroute () {
+	clear
+	ip r
+	route
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function cursysusr () {
+	clear
+	w
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function clientmachinfo () {
+	clear
+	uname
+	hostnamect1
+	read -p "Hit enter to proceed" blankvar
+	networkmanage
+}
+
+function processmanage () {
+	clear
+	echo "-------Process Management-------"
+	echo "1) Show processes 2) Show processes by usage"
+	echo "3) Terminate a process 4) Show disk usage"
+	echo "5) Show free disk space 6) System uptime"
+	echo "7) Main menu"
+	read -p "Please enter the number of the function you want: " procmannum
+	case $procmannum in
+		1) showproc ;;
+		2) showprocu ;;
+		3) termproc ;;
+		4) diskuse ;;
+		5) diskfree ;;
+		6) sysup ;;
+		7) menu ;;
+		*) echo "Not a valid option"; read -p "Hit enter to proceed" blankvar ;;
+	esac
+}
+
+function showproc () {
+	clear
+	ps aux
+	read -p "Please hit enter to proceed" blankvar
+	processmanage
+}
+
+function showprocu () {
+	clear
+	ps -eo pid,ppid,%cpu,%mem,cmd --sort=-%cpu
+	read -p "Please hit enter to proceed" blankvar
+	processmanage
+}
+
+function termproc () {
+	clear
+	read -p "What is the PID of the process you want to terminate" termprocval
+	sudo kill $termprocval
+	read -p "Please hit enter to proceed" blankvar
+	processmanage
+}
+
+function diskuse () {
+	clear
+	df -h
+	read -p "Please hit enter to proceed" blankvar	
+	processmanage
+}
+
+function diskfree () {
+	clear
+	df -h
+	read -p "Please hit enter to proceed" blankvar
+	processmanage
+}
+
+function sysup () {
+	clear
+	uptime
+	read -p "Please hit enter to proceed" blankvar
+	processmanage
+}
+
+function useraccmanage () {
+	clear
+	echo "-----User Account Management-----"
+	echo "1) Add a user   2) Delete a user"
+	echo "3) Lock a users password"
+	echo "4) User details 5) Add group"
+	echo "6) Delete Group 7) Find user"
+	echo "8) Find Group   9) Main menu"
+	read -p "Please enter the number of the function you want: " useraccnum
+	case $useraccnum in
+		1) adduserfunc ;;
+		2) deluser ;;
+		3) lockuser ;;
+		4) userdet ;;
+		5) addgrp ;;
+		6) delgrp ;;
+		7) findusr ;;
+		8) findgrp ;;
+		9) menu ;;
+		*) echo "Not a valid option"; read -p "Hit enter to proceed" blankvar; useraccmanage;;
+	esac
+}
+
+function adduserfunc () {
+	clear
+	read -p "What is the name of the user you want to add? " auservar
+	sudo adduser $auservar
+	useraccmanage
+}
+
+function deluser () {
+	clear
+	read -p "Who is the user you want to remove? " duservar
+	sudo deluser $duservar
+	useraccmanage
+}
+
+function lockuser () {
+	clear
+	read -p "Who is the user you want to lock? " luservar
+	sudo passwd -l $luservar
+	useraccmanage
+}
+
+function userdet () {
+	clear
+}
+
+function addgrp () {
+	clear
+	read -p "What is the name of the group you want to add? " agrpvar
+	sudo groupadd $agrpvar
+	useraccmanage
+}
+
+function delgrp () {
+	clear
+	read -p "What is the name of the group you want to remove? " dgrpvar
+	sudo groupdel $dgrpvar
+	useraccmanage
+}
+
+function findusr () {
+	clear
+	
+	useraccmanage
+}
+
+function findgrp () {
+	clear
+	useraccmanage
+}
+
+function utilities () {
+	clear
+	echo "------------Utilities------------"
+	echo "1) Date/Time       2) Calendar"
+	echo "3) View Man pages  4)Determine File Type"
+	echo "5) Determine Command Type 6)Sort File"
+	echo "7) Search for a file 8) Main Menu"
+	read -p "Please enter the number of the function you want: " utilnum
+	case $utilnum in
+		1) datetime ;;
+		2) calend ;;
+		3) manpages ;;
+		4) filetype ;;
+		5) comtype ;;
+		6) sortfile ;;
+		7) search ;;
+		8) menu ;;
+		*) echo "Not a valid option"; read -p "Hit enter to proceed" blankvar; utilities;;
+	esac
+}
+
+function datetime () {
+	clear
+	echo "The date and time is: "
+	date 
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function calend () {
+	clear
+	read -p "Enter the number of the month you want:  " calnum
+	cal -m $calnum
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function manpages () {
+	clear
+	read -p "What is the command you want to see the manual for? " manvar
+	man $manvar > /dev/null
+	if [ $? -eq 0 ]; then
+		man $manvar
+	else
+		echo "That is not a valid command, please try again"
+	fi
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function filetype () {
+	clear
+	read -p "What is the file you want to determine the type of? " filevar
+	file $filevar > /dev/null
+	if [ $? -eq 0 ]; then
+		file $filevar
+	else
+		echo "That is not a valid file, pleasee try again"
+	fi
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function comtype () {
+	clear
+	read -p "What is the command you want to determine? " comvar
+	type -a $comvar > /dev/null
+	if [ $? -eq 0 ]; then
+		type -a $comvar
+	else
+		echo "That is not a vaild entry, please try again"
+	fi
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function sortfile () {
+	clear
+	echo "1) Normal sort 2) Reverse sort"
+	echo "3) Output to another file"
+	echo "4) Reverse sort to another file"
+	echo "5) Back to Utilities"
+	read sorttype
+	read -p "What is the file you want sorted? " filetosort
+	case $sorttype in
+		1) sort ../$filetosort | cat ;;
+		2) sort -r ../$filetosort | cat ;;
+		3) read -p "File you want to output to" outputfile ; sort ../$filetosort >> $outputfile ; cat $outputfile ;;
+		4) read -p "File you want to output to" outputfile ; sort -r ../$filetosort >> $outputfile ; cat $outputfile ;;
+		5) utilities ;;
+		*) echo "Not a valid option, please try again" ;;
+	esac
+	echo -e "\n"
+	read -p "Hit enter to proceed" blankvar
+	utilities
+}
+
+function search () {
+	clear
+	workdir=$(pwd)
+	cd ~
+	read -p "What do you want to search for? " searchvar
+	find -name "$searchvar" > /dev/null
+	if [ $? -eq 0 ]; then
+		find -name "$searchvar"
+	else
+		echo "Not able to search for that, please try again"
+	fi
+	read -p "Hit enter to proceed" blankvar
+	cd $workdir
+	utilities
+}
+
+menu
